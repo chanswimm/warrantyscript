@@ -18,6 +18,54 @@ prepared = r.prepare()
 def pretty_print_POST(req):
     """
     At this point it is completely built and ready
+#     to be fired; it is "prepared".
+
+#     However pay attention at the formatting used in
+#     this function because it is programmed to be pretty
+#     printed and may differ from the actual request.
+#     """
+#     print('{}\n{}\r\n{}\r\n\r\n{}'.format(
+#         '-----------START-----------',
+#         req.method + ' ' + req.url,
+#         '\r\n'.join('{}: {}'.format(k, v) for k, v in req.headers.items()),
+#         req.body,
+#     ))
+# #results = soup.find(id='warrantyExpiringLabel')
+
+# pretty_print_POST(prepared)
+
+# s = Session()
+
+# resp = s.send(prepared)
+
+# soup = BeautifulSoup(resp.content, 'html.parser')
+# #results = soup.find(id='warrantyExpiringLabel')
+# #keyword = 'warrantyQparam'
+# results = soup.find_all('script',type='text/javascript')
+# print(results)
+
+# """
+# ---For Lisa ----
+# so the results printed here would get me the warrantyEncryptedParamas that's within javascript
+# assuming i can parse it to that part only (which is the data section below)
+# i think i have to send that back to Dell to actually get the warranty info
+
+# """
+
+print(results.script.keyword)
+p = re.compile('var table_body = (.*?);')
+fields = dict(re.findall(p, results.text))
+print fields['warrantyQparam']
+
+data={'warrantyEncryptedParams':'eyJTZXJ2aWNlVGFnIjoiNzBKWVdDMiIsIkNvbXBhbnlOdW1iZXIiOiIwNCIsIkxvY2FsQ2hhbm5lbCI6IjA0IiwiTG9iIjoiUG93ZXJDb25uZWN0IiwiUHJvZHVjdENvZGUiOiJuZXR3b3JraW5nLW4zMDAwLXNlcmllcyIsIkJ1aWQiOiIxMSIsIlNlZ21lbnQiOiJCU0QiLCJGYW1pbHlOYW1lIjoibmV0d29ya2luZ19zd2l0Y2hlc19zZXJpZXMiLCJDdXN0b21lck51bWJlciI6IjE0Njk0ODkzMiIsIlByb2R1Y3RMT0IiOiI0Rk8iLCJBcHBOYW1lIjoibXNlIn01'}
+
+url2='https://www.dell.com/support/components/dashboard/en-ca/Warranty/GetInlineWarranty'
+
+q = requests.Request('POST', url2, headers=data)
+prepared = q.prepare()
+def pretty_print_POST(req):
+    """
+    At this point it is completely built and ready
     to be fired; it is "prepared".
 
     However pay attention at the formatting used in
@@ -30,56 +78,8 @@ def pretty_print_POST(req):
         '\r\n'.join('{}: {}'.format(k, v) for k, v in req.headers.items()),
         req.body,
     ))
-#results = soup.find(id='warrantyExpiringLabel')
 
 pretty_print_POST(prepared)
-
-s = Session()
-
-resp = s.send(prepared)
-
-soup = BeautifulSoup(resp.content, 'html.parser')
-#results = soup.find(id='warrantyExpiringLabel')
-#keyword = 'warrantyQparam'
-results = soup.find_all('script',type='text/javascript')
-print(results)
-
-"""
----For Lisa ----
-so the results printed here would get me the warrantyEncryptedParamas that's within javascript
-assuming i can parse it to that part only (which is the data section below)
-i think i have to send that back to Dell to actually get the warranty info
-
-"""
-
-# print(results.script.keyword)
-# p = re.compile('var table_body = (.*?);')
-# fields = dict(re.findall(p, results.text))
-# print fields['warrantyQparam']
-
-# data={'warrantyEncryptedParams':'eyJTZXJ2aWNlVGFnIjoiNzBKWVdDMiIsIkNvbXBhbnlOdW1iZXIiOiIwNCIsIkxvY2FsQ2hhbm5lbCI6IjA0IiwiTG9iIjoiUG93ZXJDb25uZWN0IiwiUHJvZHVjdENvZGUiOiJuZXR3b3JraW5nLW4zMDAwLXNlcmllcyIsIkJ1aWQiOiIxMSIsIlNlZ21lbnQiOiJCU0QiLCJGYW1pbHlOYW1lIjoibmV0d29ya2luZ19zd2l0Y2hlc19zZXJpZXMiLCJDdXN0b21lck51bWJlciI6IjE0Njk0ODkzMiIsIlByb2R1Y3RMT0IiOiI0Rk8iLCJBcHBOYW1lIjoibXNlIn01'}
-#
-# url2='https://www.dell.com/support/components/dashboard/en-ca/Warranty/GetInlineWarranty'
-#
-# q = requests.Request('GET', url2, headers=data)
-# prepared = q.prepare()
-# def pretty_print_POST(req):
-#     """
-#     At this point it is completely built and ready
-#     to be fired; it is "prepared".
-#
-#     However pay attention at the formatting used in
-#     this function because it is programmed to be pretty
-#     printed and may differ from the actual request.
-#     """
-#     print('{}\n{}\r\n{}\r\n\r\n{}'.format(
-#         '-----------START-----------',
-#         req.method + ' ' + req.url,
-#         '\r\n'.join('{}: {}'.format(k, v) for k, v in req.headers.items()),
-#         req.body,
-#     ))
-
-# pretty_print_POST(prepared)
 
 
 """
